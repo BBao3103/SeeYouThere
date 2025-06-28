@@ -1,69 +1,45 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import HTMLFlipBook from 'react-pageflip';
+import {  FaMapMarkerAlt, FaClock, FaPhoneAlt, FaGraduationCap, FaGift } from 'react-icons/fa';
 
-// Theme colors và fonts
-const theme = {
-  colors: {
-    seasalt: '#FAF9F9',
-    seasalt2: '#FAFAFB',
-    frenchGray: '#D1CACF',
-    mimiPink: '#F9D6DA',
-    wenge: '#7B6670',
-  },
-  fonts: {
-    primary: "'Playfair Display', serif",
-    secondary: "'Poppins', sans-serif",
-  },
-  shadows: {
-    soft: '0 4px 20px rgba(123, 102, 112, 0.1)',
-    medium: '0 8px 30px rgba(123, 102, 112, 0.15)',
-    strong: '0 12px 40px rgba(123, 102, 112, 0.2)',
-  }
-};
 
-// CSS cho HTMLFlipBook - giả lập
-const flipBookStyles = `
-  .invitation-flipbook {
-    position: relative !important;
-    width: 100% !important;
-    height: 100% !important;
-    overflow: visible !important;
-  }
-  .invitation-flipbook .page {
-    position: absolute !important;
-    width: 100% !important;
-    height: 100% !important;
-    top: 0 !important;
-    left: 0 !important;
-    background: transparent !important;
-    z-index: 1;
-    box-sizing: border-box;
-  }
-`;
+
 
 const BookContainer = styled.div`
   width: 420px;
   height: 600px;
+  min-height: 100vh;
   margin: 0 auto;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: none;
   @media (max-width: 768px) {
     width: 98vw;
     height: 70vw;
     min-width: 220px;
-    min-height: 320px;
+    min-height: 100vh;
+    justify-content: center;
+    padding-top: 0;
   }
   @media (max-width: 480px) {
     width: 95vw;
     height: 75vw;
     min-width: 200px;
-    min-height: 280px;
+    min-height: 100vh;
+    justify-content: center;
+    padding-top: 0;
   }
   @media (max-width: 360px) {
     width: 92vw;
     height: 80vw;
     min-width: 180px;
-    min-height: 250px;
+    min-height: 100vh;
+    justify-content: center;
+    padding-top: 0;
   }
 `;
 
@@ -82,17 +58,17 @@ const PageStyled = styled.div`
   border: 2px solid ${props => props.theme.colors.frenchGray};
   position: relative;
   @media (max-width: 768px) {
-    padding: 18px 6vw 12px 6vw;
+    padding: 32px 10vw 24px 10vw;
     border-radius: 10px;
     border: 1.5px solid ${props => props.theme.colors.frenchGray};
   }
   @media (max-width: 480px) {
-    padding: 12px 4vw 8px 4vw;
+    padding: 24px 7vw 16px 7vw;
     border-radius: 8px;
     border: 1px solid ${props => props.theme.colors.frenchGray};
   }
   @media (max-width: 360px) {
-    padding: 8px 3vw 6px 3vw;
+    padding: 16px 4vw 10px 4vw;
     border-radius: 6px;
   }
 `;
@@ -105,6 +81,7 @@ const PageContent = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 0;
   h1 {
     font-size: 2.2rem;
     margin-bottom: 12px;
@@ -188,17 +165,26 @@ const PageContent = styled.div`
     color: #7B6670;
     margin-bottom: 8px;
     @media (max-width: 768px) {
-      font-size: 0.95rem;
-      margin-bottom: 6px;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
     }
     @media (max-width: 480px) {
-      font-size: 0.85rem;
-      margin-bottom: 5px;
+      font-size: 1rem;
+      margin-bottom: 10px;
     }
     @media (max-width: 360px) {
-      font-size: 0.8rem;
-      margin-bottom: 4px;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
     }
+  }
+  @media (max-width: 768px) {
+    padding: 0 2vw;
+  }
+  @media (max-width: 480px) {
+    padding: 0 4vw;
+  }
+  @media (max-width: 360px) {
+    padding: 0 2vw;
   }
 `;
 
@@ -243,6 +229,7 @@ const DownloadButton = styled.button`
   transition: all 0.3s ease;
   box-shadow: ${props => props.theme.shadows.medium};
   margin-top: 20px;
+  margin-bottom: 80px;
   &:hover {
     transform: translateY(-3px);
     box-shadow: ${props => props.theme.shadows.strong};
@@ -251,18 +238,21 @@ const DownloadButton = styled.button`
     padding: 12px 24px;
     font-size: 14px;
     margin-top: 15px;
+    margin-bottom: 60px;
     border-radius: 20px;
   }
   @media (max-width: 480px) {
     padding: 10px 20px;
     font-size: 12px;
     margin-top: 12px;
+    margin-bottom: 80px;
     border-radius: 18px;
   }
   @media (max-width: 360px) {
     padding: 8px 16px;
     font-size: 11px;
     margin-top: 10px;
+    margin-bottom: 90px;
     border-radius: 15px;
   }
 `;
@@ -291,24 +281,26 @@ const InviteImage = styled.img`
 `;
 
 const NavigationContainer = styled.div`
-  position: absolute;
-  bottom: -60px;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 100%;
   display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   gap: 20px;
+  margin: 36px 0 0 0;
+  position: static;
   z-index: 10;
   @media (max-width: 768px) {
-    bottom: -50px;
     gap: 15px;
+    margin: 48px 0 0 0;
   }
   @media (max-width: 480px) {
-    bottom: -45px;
     gap: 12px;
+    margin: 60px 0 0 0;
   }
   @media (max-width: 360px) {
-    bottom: -40px;
     gap: 10px;
+    margin: 70px 0 0 0;
   }
 `;
 
@@ -355,16 +347,112 @@ const NavButton = styled.button`
   }
 `;
 
-const iconHeart = '💖';
-const iconMap = '📍';
-const iconClock = '⏰';
-const iconPhone = '📱';
-const iconMail = '✉️';
-const iconZalo = '💬';
+// Trang trí thêm cho từng trang
+const Ribbon = styled.div`
+  width: 80px;
+  height: 18px;
+  background: linear-gradient(90deg, #f9d6da 0%, #d1cacf 100%);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px auto;
+  box-shadow: 0 2px 8px 0 #f9d6da33;
+`;
+
+const Flower = styled.div`
+  position: absolute;
+  top: 18px;
+  right: 24px;
+  font-size: 2.2rem;
+  color: #f9d6da;
+  opacity: 0.7;
+  pointer-events: none;
+`;
+
+const Bow = styled.div`
+  width: 38px;
+  height: 24px;
+  background: none;
+  margin: 0 auto 8px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &::before, &::after {
+    content: '';
+    display: block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #f9d6da;
+    position: relative;
+    margin: 0 2px;
+    opacity: 0.7;
+  }
+  &::before { left: 0; }
+  &::after { right: 0; }
+`;
+
+const CapIcon = styled(FaGraduationCap)`
+  color: #d94f6a;
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+`;
+
+const GiftIcon = styled(FaGift)`
+  color: #d1cacf;
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+`;
+
+const PaginationDots = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 60px;
+`;
+const Dot = styled.div`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: ${props => props.active ? '#d94f6a' : '#d1cacf'};
+  opacity: ${props => props.active ? 1 : 0.5};
+  transition: background 0.2s, opacity 0.2s;
+`;
+
+const NameScript = styled.div`
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.3rem;
+  color: #d94f6a;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px #f9d6da55;
+`;
+
+// Lấy tên từ URL
+function getGuestName() {
+  if (typeof window !== 'undefined') {
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get('name');
+    return name ? decodeURIComponent(name) : 'Bạn';
+  }
+  return 'Bạn';
+}
+
+const NUM_PAGES = 6;
 
 const InvitationBook = () => {
   const bookRef = useRef();
-  
+  const [currentPage, setCurrentPage] = useState(0);
+  const guestName = getGuestName();
+  const cardInviteUrl = `${import.meta.env.BASE_URL}card-invite.png`;
+  const avatarUrl = `${import.meta.env.BASE_URL}avatar.jpg`;
+
   const goToPrevPage = () => {
     if (bookRef.current) {
       bookRef.current.pageFlip().flipPrev();
@@ -375,6 +463,11 @@ const InvitationBook = () => {
     if (bookRef.current) {
       bookRef.current.pageFlip().flipNext();
     }
+  };
+
+  // Lắng nghe sự kiện lật trang
+  const onFlip = (e) => {
+    setCurrentPage(e.data);
   };
 
   return (
@@ -393,73 +486,83 @@ const InvitationBook = () => {
         ref={bookRef}
         style={{ margin: '0 auto', borderRadius: 18 }}
         className="invitation-flipbook"
+        onFlip={onFlip}
       >
-        {/* Trang 1 */}
+        {/* Trang 1: Lời mời */}
         <PageStyled>
+          <Flower>🌸</Flower>
+          <Ribbon>Mời bạn</Ribbon>
           <PageContent>
-            <span className="icon">{iconHeart}</span>
+            <CapIcon />
             <h1>LỄ TỐT NGHIỆP</h1>
             <div className="desc">Thân mời bạn:</div>
-            <div className="guest">Bảo Bùi</div>
-            <div className="desc">đến tham dự buổi lễ tốt nghiệp cùng chúng mình!</div>
+            <div className="guest">{guestName}</div>
+            <div className="desc">Hãy cùng mình lưu lại khoảnh khắc ý nghĩa này nhé!</div>
           </PageContent>
         </PageStyled>
-        {/* Trang 2 */}
+        {/* Trang 2: Nhân vật */}
         <PageStyled>
+          <Bow />
           <PageContent>
-            <Avatar src="/avatar.jpg" alt="Hà Vụng Liên" onError={e => e.target.style.display='none'} />
-            <div className="script">Hà Vụng Liên</div>
-            <div className="desc">Sinh viên tốt nghiệp</div>
+            <Avatar src={avatarUrl} alt="Hà Vụng Liên" onError={e => e.target.style.display='none'} />
+            <NameScript>Hà Vụng Liên</NameScript>
+            <div className="desc">Tốt nghiệp - Một hành trình khép lại, một hành trình mới bắt đầu!</div>
           </PageContent>
         </PageStyled>
-        {/* Trang 3 */}
+        {/* Trang 3: Địa điểm */}
         <PageStyled>
           <PageContent>
-            <span className="icon">{iconMap}</span>
-            <h2>Địa điểm</h2>
+            <FaMapMarkerAlt style={{ color: '#d94f6a', fontSize: '2rem', marginBottom: 8 }} />
+            <h2>Địa điểm tổ chức</h2>
             <div className="desc">Trường Đại học Sư phạm TP. Hồ Chí Minh</div>
             <div className="desc">280 An Dương Vương, Phường 4, Quận 5</div>
+            <div style={{ marginTop: 10, color: '#d94f6a', fontSize: 18 }}>🎈 Hẹn gặp bạn tại đây! 🎈</div>
           </PageContent>
         </PageStyled>
-        {/* Trang 4 */}
+        {/* Trang 4: Thời gian */}
         <PageStyled>
           <PageContent>
-            <span className="icon">{iconClock}</span>
+            <FaClock style={{ color: '#d94f6a', fontSize: '2rem', marginBottom: 8 }} />
             <h2>Thời gian</h2>
             <div className="desc">9h sáng, Thứ ba</div>
             <div className="desc">15/07/2025</div>
+            <div style={{ marginTop: 10, color: '#d94f6a', fontSize: 18 }}>⏳ Đừng quên lưu lịch nhé!</div>
           </PageContent>
         </PageStyled>
-        {/* Trang 5 */}
+        {/* Trang 5: Liên hệ */}
         <PageStyled>
           <PageContent>
-            <span className="icon">{iconPhone}</span>
+            <FaPhoneAlt style={{ color: '#d94f6a', fontSize: '2rem', marginBottom: 8 }} />
             <h2>Liên hệ</h2>
-            <div className="desc">SĐT: 0902 473 441</div>
-            <div className="desc">Zalo: havuonglien</div>
-            <div className="desc">Email: havuonglien@example.com</div>
+            <div className="desc">Nếu cần hỗ trợ, hãy gọi cho mình nhé!</div>
+            <div className="desc" style={{ fontWeight: 600, fontSize: 18 }}>0902 473 441</div>
+            <div style={{ marginTop: 10, color: '#d94f6a', fontSize: 16, fontWeight: 600 }}>💬 Rất mong được gặp bạn!</div>
           </PageContent>
         </PageStyled>
-        {/* Trang 6 - card-invite.jpg */}
+        {/* Trang 6: Quà tặng/Ảnh */}
         <PageStyled>
           <PageContent>
-            <InviteImage src="/card-invite.jpg" alt="Thiệp mời tốt nghiệp" />
+            <InviteImage src={cardInviteUrl} alt="Thiệp mời tốt nghiệp" />
             <DownloadButton onClick={() => {
               const link = document.createElement('a');
-              link.href = '/card-invite.jpg';
-              link.download = 'card-invite.jpg';
+              link.href = cardInviteUrl;
+              link.download = 'card-invite.png';
               link.click();
             }}>
-              📥 Tải thư mời
+              🎁 Tải thư mời về máy
             </DownloadButton>
           </PageContent>
         </PageStyled>
       </HTMLFlipBook>
-      
       <NavigationContainer>
         <NavButton onClick={goToPrevPage} title="Trang trước">
           ◀
         </NavButton>
+        <PaginationDots>
+          {Array.from({ length: NUM_PAGES }).map((_, idx) => (
+            <Dot key={idx} active={currentPage === idx} />
+          ))}
+        </PaginationDots>
         <NavButton onClick={goToNextPage} title="Trang sau">
           ▶
         </NavButton>

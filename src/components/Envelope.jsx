@@ -51,11 +51,11 @@ const EnvelopeSide = styled.div`
   box-shadow: ${props => props.theme.shadows.medium};
   overflow: hidden;
   @media (max-width: 768px) {
-    border-radius: 0 0 12px 12px;
+    border-radius: 12px;
     font-size: 18px;
   }
   @media (max-width: 480px) {
-    border-radius: 0 0 10px 10px;
+    border-radius: 10px;
     font-size: 16px;
   }
 `;
@@ -309,8 +309,8 @@ const Envelope = ({ onEnvelopeOpen, isOpen, setEnvelopeFlipped }) => {
       if (setEnvelopeFlipped) setEnvelopeFlipped(true);
       // Xoay phong bì
       if (envelopeRef.current && flapContainerRef.current) {
-        envelopeRef.current.style.transition = 'transform 1.2s cubic-bezier(0.77,0,0.18,1)';
-        flapContainerRef.current.style.transition = 'transform 1.2s cubic-bezier(0.77,0,0.18,1)';
+        envelopeRef.current.style.transition = 'transform 0.8s cubic-bezier(0.77,0,0.18,1)';
+        flapContainerRef.current.style.transition = 'transform 0.8s cubic-bezier(0.77,0,0.18,1)';
         envelopeRef.current.style.transform = 'rotateY(180deg)';
         flapContainerRef.current.style.transform = 'rotateY(180deg)';
         setTimeout(() => {
@@ -318,8 +318,8 @@ const Envelope = ({ onEnvelopeOpen, isOpen, setEnvelopeFlipped }) => {
           setTimeout(() => {
             setIsAnimating(false);
             onEnvelopeOpen();
-          }, 1000);
-        }, 1300);
+          }, 800);
+        }, 1000);
       }
     }
   };
